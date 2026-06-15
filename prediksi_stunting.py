@@ -20,3 +20,15 @@ df = df.dropna(
 print("DATASET STUNTING INDONESIA")
 print(f"Jumlah Data      : {len(df)}")
 print(f"Jumlah Provinsi  : {df['Provinsi'].nunique()}")
+
+FITUR = [
+    "Gizi Buruk (%)",
+    "Gizi Kurang (%)",
+    "Sanitasi Layak (%)",
+    "Air Minum Layak (%)",
+    "Kemiskinan (%)",
+    "IPM",
+    "Tahun"
+]
+
+TARGET = "Stunting (%)"
