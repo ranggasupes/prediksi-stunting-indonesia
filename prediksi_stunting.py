@@ -74,3 +74,8 @@ for nama, model in models.items():
     else:
         model.fit(X_train, y_train)
         y_pred = model.predict(X_test)
+
+    mae = mean_absolute_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
+
+    
