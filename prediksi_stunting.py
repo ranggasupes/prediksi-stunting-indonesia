@@ -51,6 +51,17 @@ X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
 models = {
-    "Random Forest": RandomForestRegressor(n_estimators=200, random_state=42),
-    "SVR": SVR(kernel="rbf", C=100, gamma="scale")
+    "Random Forest": RandomForestRegressor(
+        n_estimators=200,
+        random_state=42
+    ),
+    "SVR": SVR(
+        kernel="rbf",
+        C=100,
+        gamma="scale"
+    )
 }
+
+print("PERBANDINGAN MODEL")
+print(f"{'Model':<20} {'MAE':>10} {'R2 Score':>10}")
+print("-" * 45)
