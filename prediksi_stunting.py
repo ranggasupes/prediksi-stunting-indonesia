@@ -32,3 +32,7 @@ FITUR = [
 ]
 
 TARGET = "Stunting (%)"
+
+X = df[FITUR]
+y = df[TARGET]
+
