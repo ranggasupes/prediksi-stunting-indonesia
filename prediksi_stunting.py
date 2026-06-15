@@ -12,3 +12,8 @@ df = pd.read_excel(
 )
 
 print(df.head())
+
+df = df.dropna(
+    subset=["Stunting (%)"]
+)
+
