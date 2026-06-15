@@ -2,6 +2,7 @@ import pandas as pd
 
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
+from sklearn.svm import SVR
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import r2_score
@@ -48,3 +49,8 @@ scaler = StandardScaler()
 
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
+
+models = {
+    "Random Forest": RandomForestRegressor(n_estimators=200, random_state=42),
+    "SVR": SVR(kernel="rbf", C=100, gamma="scale")
+}
