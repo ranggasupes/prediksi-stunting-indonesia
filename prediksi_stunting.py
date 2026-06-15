@@ -6,3 +6,9 @@ from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import r2_score
 
 print("Prediksi Stunting Indonesia")
+
+df = pd.read_excel(
+    "dataset_stunting_indonesia.xlsx"
+)
+
+print(df.head())
