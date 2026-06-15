@@ -17,3 +17,6 @@ df = df.dropna(
     subset=["Stunting (%)"]
 )
 
+print("DATASET STUNTING INDONESIA")
+print(f"Jumlah Data      : {len(df)}")
+print(f"Jumlah Provinsi  : {df['Provinsi'].nunique()}")
