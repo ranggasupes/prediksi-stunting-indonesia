@@ -65,3 +65,12 @@ models = {
 print("PERBANDINGAN MODEL")
 print(f"{'Model':<20} {'MAE':>10} {'R2 Score':>10}")
 print("-" * 45)
+
+for nama, model in models.items():
+
+    if nama == "SVR":
+        model.fit(X_train_scaled, y_train)
+        y_pred = model.predict(X_test_scaled)
+    else:
+        model.fit(X_train, y_train)
+        y_pred = model.predict(X_test)
