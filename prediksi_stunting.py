@@ -78,4 +78,4 @@ for nama, model in models.items():
     mae = mean_absolute_error(y_test, y_pred)
     r2 = r2_score(y_test, y_pred)
 
-    
+    print(f"{nama:<20} {mae:>10.3f} {r2:>10.4f}")
