@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
@@ -181,3 +182,24 @@ for provinsi in sorted(df["Provinsi"].unique()):
 
 df_output = pd.DataFrame(rows_output)
 df_output.to_excel("hasil_prediksi_stunting.xlsx", index=False)
+
+
+print()
+print("File berhasil disimpan")
+print("hasil_prediksi_stunting.xlsx")
+
+
+df_2027 = df_output[df_output["Tahun"] == 2027] \
+    .groupby("Provinsi")["Prediksi Stunting (%)"] \
+    .mean() \
+    .sort_values(ascending=False)
+
+plt.figure(figsize=(12, 6))
+df_2027.plot(kind="bar")
+
+plt.title("Prediksi Stunting 2027 per Provinsi")
+plt.xlabel("Provinsi")
+plt.ylabel("Stunting (%)")
+
+plt.tight_layout()
+plt.show()
