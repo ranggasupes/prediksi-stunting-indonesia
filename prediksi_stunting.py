@@ -2,27 +2,20 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split
 from sklearn.svm import SVR
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import mean_absolute_error
-from sklearn.metrics import r2_score
+from sklearn.metrics import mean_absolute_error, r2_score
 
-print("Prediksi Stunting Indonesia")
+# Load Dataset
+df = pd.read_excel("dataset_stunting_indonesia.xlsx")
 
-df = pd.read_excel(
-    "dataset_stunting_indonesia.xlsx"
-)
-
-print(df.head())
-
-df = df.dropna(
-    subset=["Stunting (%)"]
-)
+df = df.dropna(subset=["Stunting (%)"])
 
 print("DATASET STUNTING INDONESIA")
 print(f"Jumlah Data      : {len(df)}")
 print(f"Jumlah Provinsi  : {df['Provinsi'].nunique()}")
+print()
 
 FITUR = [
     "Gizi Buruk (%)",
@@ -67,6 +60,10 @@ print("PERBANDINGAN MODEL")
 print(f"{'Model':<20} {'MAE':>10} {'R2 Score':>10}")
 print("-" * 45)
 
+best_model = None
+best_model_name = None
+best_r2 = -999
+
 for nama, model in models.items():
 
     if nama == "SVR":
@@ -110,52 +107,53 @@ else:
 
     best_model.fit(X, y)
 
-    def prediksi_provinsi(nama_provinsi, tahun_prediksi=[2024, 2025, 2026, 2027]):
+def prediksi_provinsi(nama_provinsi, tahun_prediksi=[2024, 2025, 2026, 2027]):
 
-        data_prov = df[df["Provinsi"] == nama_provinsi].sort_values("Tahun")
+    data_prov = df[df["Provinsi"] == nama_provinsi].sort_values("Tahun")
 
-        if data_prov.empty:
-            return None
+    if data_prov.empty:
+        return None
 
-        terakhir = data_prov.iloc[-1].copy()
-        stunting_terakhir = terakhir["Stunting (%)"]
+    terakhir = data_prov.iloc[-1].copy()
 
-        hasil = []
+    stunting_terakhir = terakhir["Stunting (%)"]
 
-        for tahun in tahun_prediksi:
+    hasil = []
 
-            fitur_prediksi = {
-                "Gizi Buruk (%)": terakhir["Gizi Buruk (%)"] * 0.99,
-                "Gizi Kurang (%)": terakhir["Gizi Kurang (%)"] * 0.99,
-                "Sanitasi Layak (%)": min(100, terakhir["Sanitasi Layak (%)"] * 1.01),
-                "Air Minum Layak (%)": min(100, terakhir["Air Minum Layak (%)"] * 1.01),
-                "Kemiskinan (%)": terakhir["Kemiskinan (%)"] * 0.98,
-                "IPM": terakhir["IPM"] * 1.005,
-                "Tahun": tahun
-            }
+    for tahun in tahun_prediksi:
 
-            X_pred = pd.DataFrame([fitur_prediksi])
+        fitur_prediksi = {
+            "Gizi Buruk (%)": terakhir["Gizi Buruk (%)"] * 0.99,
+            "Gizi Kurang (%)": terakhir["Gizi Kurang (%)"] * 0.99,
+            "Sanitasi Layak (%)": min(100, terakhir["Sanitasi Layak (%)"] * 1.01),
+            "Air Minum Layak (%)": min(100, terakhir["Air Minum Layak (%)"] * 1.01),
+            "Kemiskinan (%)": terakhir["Kemiskinan (%)"] * 0.98,
+            "IPM": terakhir["IPM"] * 1.005,
+            "Tahun": tahun
+        }
 
-            if best_model_name == "SVR":
-                X_pred = scaler.transform(X_pred)
+        X_pred = pd.DataFrame([fitur_prediksi])
 
-            prediksi = best_model.predict(X_pred)[0]
+        if best_model_name == "SVR":
+            X_pred = scaler.transform(X_pred)
 
-            batas_turun = stunting_terakhir - 1.5
-            batas_naik = stunting_terakhir + 1.0
+        prediksi = best_model.predict(X_pred)[0]
 
-            prediksi = max(prediksi, batas_turun)
-            prediksi = min(prediksi, batas_naik)
+        batas_turun = stunting_terakhir - 1.5
+        batas_naik = stunting_terakhir + 1.0
 
-            hasil.append({
-                "Tahun": tahun,
-                "Prediksi Stunting (%)": round(prediksi, 2)
-            })
+        prediksi = max(prediksi, batas_turun)
+        prediksi = min(prediksi, batas_naik)
 
-            stunting_terakhir = prediksi
+        hasil.append({
+            "Tahun": tahun,
+            "Prediksi Stunting (%)": round(prediksi, 2)
+        })
 
-        return pd.DataFrame(hasil)
-    
+        stunting_terakhir = prediksi
+
+    return pd.DataFrame(hasil)
+
 print("PREDIKSI STUNTING")
 
 rows_output = []
@@ -181,8 +179,8 @@ for provinsi in sorted(df["Provinsi"].unique()):
         })
 
 df_output = pd.DataFrame(rows_output)
-df_output.to_excel("hasil_prediksi_stunting.xlsx", index=False)
 
+df_output.to_excel("hasil_prediksi_stunting.xlsx", index=False)
 
 print()
 print("File berhasil disimpan")
