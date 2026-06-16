@@ -145,3 +145,12 @@ else:
 
             prediksi = max(prediksi, batas_turun)
             prediksi = min(prediksi, batas_naik)
+
+            hasil.append({
+                "Tahun": tahun,
+                "Prediksi Stunting (%)": round(prediksi, 2)
+            })
+
+            stunting_terakhir = prediksi
+
+        return pd.DataFrame(hasil)
