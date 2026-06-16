@@ -119,4 +119,18 @@ else:
         terakhir = data_prov.iloc[-1].copy()
         stunting_terakhir = terakhir["Stunting (%)"]
 
-    hasil = []
+        hasil = []
+
+        for tahun in tahun_prediksi:
+
+            fitur_prediksi = {
+                "Gizi Buruk (%)": terakhir["Gizi Buruk (%)"] * 0.99,
+                "Gizi Kurang (%)": terakhir["Gizi Kurang (%)"] * 0.99,
+                "Sanitasi Layak (%)": min(100, terakhir["Sanitasi Layak (%)"] * 1.01),
+                "Air Minum Layak (%)": min(100, terakhir["Air Minum Layak (%)"] * 1.01),
+                "Kemiskinan (%)": terakhir["Kemiskinan (%)"] * 0.98,
+                "IPM": terakhir["IPM"] * 1.005,
+                "Tahun": tahun
+            }
+
+            X_pred = pd.DataFrame([fitur_prediksi])
