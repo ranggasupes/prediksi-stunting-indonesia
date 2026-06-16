@@ -89,3 +89,22 @@ print()
 print(f"Model Terbaik : {best_model_name}")
 print(f"R2 Score      : {best_r2:.4f}")
 print()
+
+if best_model_name == "SVR":
+    X_full = scaler.fit_transform(X)
+
+    best_model = SVR(
+        kernel="rbf",
+        C=100,
+        gamma="scale"
+    )
+
+    best_model.fit(X_full, y)
+
+else:
+    best_model = RandomForestRegressor(
+        n_estimators=200,
+        random_state=42
+    )
+
+    best_model.fit(X, y)
