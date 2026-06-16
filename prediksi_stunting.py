@@ -108,3 +108,15 @@ else:
     )
 
     best_model.fit(X, y)
+
+    def prediksi_provinsi(nama_provinsi, tahun_prediksi=[2024, 2025, 2026, 2027]):
+
+        data_prov = df[df["Provinsi"] == nama_provinsi].sort_values("Tahun")
+
+        if data_prov.empty:
+            return None
+
+        terakhir = data_prov.iloc[-1].copy()
+        stunting_terakhir = terakhir["Stunting (%)"]
+
+    hasil = []
