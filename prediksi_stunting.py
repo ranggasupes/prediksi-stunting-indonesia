@@ -154,3 +154,30 @@ else:
             stunting_terakhir = prediksi
 
         return pd.DataFrame(hasil)
+    
+print("PREDIKSI STUNTING")
+
+rows_output = []
+
+for provinsi in sorted(df["Provinsi"].unique()):
+
+    hasil = prediksi_provinsi(provinsi)
+
+    if hasil is None:
+        continue
+
+    print()
+    print(provinsi)
+
+    for _, row in hasil.iterrows():
+
+        print(f"{int(row['Tahun'])} : {row['Prediksi Stunting (%)']:.2f}%")
+
+        rows_output.append({
+            "Provinsi": provinsi,
+            "Tahun": int(row["Tahun"]),
+            "Prediksi Stunting (%)": row["Prediksi Stunting (%)"]
+        })
+
+df_output = pd.DataFrame(rows_output)
+df_output.to_excel("hasil_prediksi_stunting.xlsx", index=False)
