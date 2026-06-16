@@ -79,3 +79,8 @@ for nama, model in models.items():
     r2 = r2_score(y_test, y_pred)
 
     print(f"{nama:<20} {mae:>10.3f} {r2:>10.4f}")
+
+    if r2 > best_r2:
+        best_r2 = r2
+        best_model = model
+        best_model_name = nama
