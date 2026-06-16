@@ -134,3 +134,14 @@ else:
             }
 
             X_pred = pd.DataFrame([fitur_prediksi])
+
+            if best_model_name == "SVR":
+                X_pred = scaler.transform(X_pred)
+
+            prediksi = best_model.predict(X_pred)[0]
+
+            batas_turun = stunting_terakhir - 1.5
+            batas_naik = stunting_terakhir + 1.0
+
+            prediksi = max(prediksi, batas_turun)
+            prediksi = min(prediksi, batas_naik)
