@@ -84,3 +84,8 @@ for nama, model in models.items():
         best_r2 = r2
         best_model = model
         best_model_name = nama
+
+print()
+print(f"Model Terbaik : {best_model_name}")
+print(f"R2 Score      : {best_r2:.4f}")
+print()
